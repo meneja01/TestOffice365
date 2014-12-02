@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.SettableFuture;
-import com.microsoft.services.odata.impl.DefaultDependencyResolver;
 
 import java.util.concurrent.Callable;
 
@@ -21,8 +20,6 @@ public class MyActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
-
-        Controller.getInstance().setDependencyResolver(new DefaultDependencyResolver());
 
         final Button email = (Button)findViewById(R.id.button_start_email);
         email.setOnClickListener(this);
@@ -47,11 +44,9 @@ public class MyActivity extends Activity implements View.OnClickListener {
         //
         // run authentication
         //
-        Authentication.createEncryptionKey(getApplicationContext());
         SettableFuture<Void> authenticated =
                 Authentication.acquireToken(
-                        MyActivity.this,
-                        (DefaultDependencyResolver) Controller.getInstance().getDependencyResolver()
+                        MyActivity.this
                 );
 
         final Context context = this;
@@ -101,7 +96,7 @@ public class MyActivity extends Activity implements View.OnClickListener {
                 intent = new Intent(this, MailActivity.class);
                 break;
             case R.id.button_start_calendar:
-                //intent = new Intent(this, CalendarActivity.class);
+               // intent = new Intent(this, CalendarActivity.class);
                 break;
             default:
                 break;
